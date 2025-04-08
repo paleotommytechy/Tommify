@@ -1,0 +1,32 @@
+{% extends 'social_base.html' %}
+{% load static %}
+{% block friend %}
+<div class="d-flex justify-content-center w-100">
+	<div class= "p-3 bg-white shadow rounded" style="width:90%; max-width:600px;">
+    <h5 class="text-primary text-center">People to Connect With</h5>
+                {% for person in people_to_connect %}
+                <div class="d-flex align-items-center bg-white p-2 rounded shadow-sm mb-2">
+                    <img src="{% if person.photo %}{{person.photo.url}}{% else %}{% static 'img/profile.png' %}{% endif %}" alt="User" class="rounded-circle me-2 thumbline1" >
+                    <div class="d-flex w-100 align-items-center">
+                        <strong class="me-2">{% if person.user.last_name and person.user.first_name%}
+                            {{person.user.last_name|title}} {{person.user.first_name|title}}
+                            {% else %}{{person.user.username|title}}{% endif %}
+                        </strong>
+						{% if person.user != request.user %}
+							<form method="POST" action="{% if person.user.id in following %}{% url 'social:unfollow_user' person.user.id %}?next=social:home {% else %}{% url 'social:follow_user' person.user.id %}?next=social:network {% endif %}" class="ms-auto">
+								{% csrf_token %}
+								<button type="submit" class="btn btn-sm btn-primary ms-auto">
+									{% if person.user.id in following %}
+										Connected
+									{% else %}
+										Connect +
+									{% endif %}
+								</button>
+							</form>		
+						{% endif %}
+					</div>
+				</div>
+				{% endfor %}
+	</div>
+</div>
+{% endblock %}

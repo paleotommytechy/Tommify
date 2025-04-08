@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tommify - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+   
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> 
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-primary text-white fixed-top px-3">
+        <div class="container-fluid">
+            <!-- Sidebar Toggle Button (Only Visible on Mobile) -->
+            <button class="btn text-white d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="navbar-brand text-white fw-bold fs-6 mb-0 h1 ms-n3" href="#">Tommify</a>
+
+            <div class="d-none d-lg-flex custom-shift">
+                <a href="{% url 'social:home' %}" class="mx-2 text-white text-decoration-none">Home</a>
+                <a href="{% url 'social:profile_edit' %}" class="mx-2 text-white text-decoration-none">Profile</a>
+                <a href="#" class="mx-2 text-white text-decoration-none">Messages</a>
+                <a href="#" class="mx-2 text-white text-decoration-none">Notifications</a>
+                <a href="#" class="mx-2 text-white text-decoration-none">Groups</a>
+                <a href="{% url 'social:friends_list' %}" class="mx-2 text-white text-decoration-none">Friends</a>
+            </div>
+
+            <div class="d-lg-none mx-auto d-flex align-items-center ms-n3">
+                <a href="{% url 'social:home' %}" class="mx-2 text-white text-decoration-none" data-bs-toggle="tooltip" title="Home"><i class="bi bi-house text-white mx-1"></i></a>
+				<a href="{% url 'social:profile_edit' %}" class="mx-2 text-white text-decoration-none" data-bs-toggle="tooltip" title="Profile"><i class="bi bi-person text-white mx-1"></i></a>
+                <a href="#" class="mx-2 text-white text-decoration-none" data-bs-toggle="tooltip" title="Messages"><i class="bi bi-chat text-white mx-1"></i></a>
+				<a href="#" class="mx-2 text-white text-decoration-none"data-bs-toggle="tooltip" title="Notifications"><i class="bi bi-bell text-white mx-1"></i></a>
+				<a href="{% url 'social:friends_list' %}" class="mx-2 text-white text-decoration-none" data-bs-toggle="tooltip" title="Friends"><i class="bi bi-person text-white mx-1"></i></a>
+                <i class="bi bi-search text-white d-lg-none mx-1"></i>
+            </div>
+
+            <div class="d-flex justify-content-center w-25 d-none d-lg-block mx-3">
+				<div class="input-group" style="width: 90%;">
+					<input type="text" class="form-control rounded-start shadow-sm" 
+						placeholder="Search" style="width: 80%;">
+					<span class="input-group-text bg-white border-left-0 ps-3">
+						<i class="bi bi-search"></i>
+					</span>
+				</div>
+			</div>
+            
+            <a class="btn btn-outline-light btn-sm py-1 px-2" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Sidebar for Mobile (Offcanvas Sidebar) -->
+    <div class="offcanvas offcanvas-start w-50 sidebar-glass " tabindex="-1" id="mobileSidebar">
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body text-center">
+            {% if profile.photo %}
+            <img src="{{profile.photo.url}}" alt="Poster" class="rounded-circle me-2 thumbline1" >
+            {% else %}
+            <img src="{% static 'img/profile.png' %}" alt="Poster" class="rounded-circle me-2 thumbline1" >
+            {% endif %}  
+            <a href="{% url 'social:home' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Home</a>
+            <a href="{% url 'social:profile_edit' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Profile</a>
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Messages</a>
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Notifications</a>
+			<a href="{% url 'social:network' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Network</a>
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Groups</a>
+            <a href="{% url 'social:friends_list' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Friends</a>
+		{% if user.is_authenticated and user.is_staff %}
+			<a href="{% url 'admin:index' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Admin Panel</a>
+		{% endif %}
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Settings</a>
+            <a href="#" class="d-block text-danger text-decoration-none mt-3 sidebar-link">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid" style="margin-top:80px;">
+        <div class="row">
+
+        <!-- Desktop Sidebar -->
+        <div class="col-lg-2 sidebar-glass text-dark text-center vh-100 d-none d-lg-block p-3 sidebar-glass position-fixed" style="top:56px; left:0; width:19%; margin-right:-15px;">
+            {% if profile.photo %}
+                <img src="{{profile.photo.url}}" alt="Poster" class="rounded-circle me-2 thumbline1" >
+           {% else %}
+                <img src="{% static 'img/profile.png' %}" alt="Poster" class="rounded-circle me-2 thumbline1" >
+            {% endif %}
+            
+            <a href="{% url 'social:home' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Home</a>
+            <a href="{% url 'social:profile_edit' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Profile</a>
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Messages</a>
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Notifications</a>
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Groups</a>
+            <a href="{% url 'social:friends_list' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Friends</a>
+            <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Settings</a>
+            <a href="{% url 'logout' %}" class="d-block text-danger text-decoration-none mt-3 sidebar-link">Logout</a>
+        </div>
+
+            <!-- Main Content -->
+			{% block main-content %}{% endblock %}
+			{% block friend %}{% endblock %}
+			
+        </div>
+    </div>
+    <!-- Bootstrap JS (for Offcanvas to work) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="{% static 'js/scripts.js' %}"></script> -->
+</body>
+</html>

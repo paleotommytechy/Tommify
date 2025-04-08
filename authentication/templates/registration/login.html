@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="glass-container text-center w-100 px-3" style="max-width: 400px;">
+    <!-- Brand Name -->
+    <h2 class="animated-text fw-bold mb-4" style="text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.3);">Tommify</h2>
+
+   
+
+    <!-- Blurry Background Form -->
+    <div class=" text-center w-100 px-3" style="max-width: 400px;">
+        {% if messages %}
+        <div class="messages.container">
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                <div class="alert alert-danger">
+                    <a>{{message}}</a>
+                </div>
+                {% elif message.tags == 'success' %}
+                <div class="alert alert-success">
+                    <a>{{message}}</a>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <a></a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+        <h4 class="fw-bold mb-4">Welcome Back!</h4>
+        <form method="post">
+            {% csrf_token %}
+			
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-white border-0 rounded-start-pill"><i class="fas fa-envelope"></i></span>
+                <input type="email" class="form-control border-0 shadow-sm rounded-end-pill" name="username" placeholder="Enter your email address" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-white border-0 rounded-start-pill"><i class="fas fa-lock"></i></span>
+                <input type="password" id="password" class="form-control border-0 shadow-sm rounded-end-pill" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="mb-3 text-end">
+                <small style="cursor: pointer;" class="showPasswordToggle py-3 ">SHOW</small>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100 rounded-pill animated-button">LOGIN</button>
+        </form>
+        <!-- social links -->
+        <div class="text-center mt-3">
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#"  class="btn btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Google">
+                    <i id="google" class="fab fa-google"></i>
+                </a>
+                <a href="#" class="btn btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="btn btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Forgot Password -->
+        <ul class="list-unstyled text-center mt-3">
+            <li><a href="{% url 'password_reset' %}" class="text-white text-decoration-none">Forgot Username or Password?</a></li>
+        </ul>
+    </div>
+     <!-- Create Account Link -->
+    <div class="mb-2">
+        <a href="{% url 'register' %}" class="text-white text-decoration-none">Create new account</a>
+    </div>
+  </div>
+
+{% endblock %}

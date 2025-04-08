@@ -1,0 +1,150 @@
+{% extends 'social_base.html' %}
+{% load static %}
+{% block main-content %}
+<div class="col-lg-7 col-12 mx-auto p-3 custom-width">
+                <div class="post-input bg-white p-3 rounded shadow-sm ">
+                    <div class="d-flex align-items-center">
+                        {% if profile.photo %}
+                        <img src="{{profile.photo.url}}" alt="Poster" class="rounded-circle me-2 thumbline2" >
+                        {% else %}
+                        <img src="{% static 'img/profile.png' %}" alt="Poster" class="rounded-circle me-2 thumbline2" >
+                        {% endif %}
+                        <form  method="post" class="w-100">
+                        {% csrf_token %}
+                            <div class="input-group">
+                                
+                                <textarea name="content"  class="form-control rounded shadow-sm me-2" placeholder="Write a post..." required></textarea><br><br>
+                                <button type="submit" class="btn btn-primary rounded ">Post</button>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Posts -->
+                {% for post in posts %}      
+                <div class="post bg-white p-3 rounded shadow-sm mt-3">
+                    <div class="d-flex align-items-center">
+                        
+                        <img src="{% if post.user.profile.photo %}{{post.user.profile.photo.url}}{% else %}{% static 'img/profile.png' %}{% endif %}" alt="Poster" class="rounded-circle me-2 thumbline1" > 
+                        <div class="d-flex flex-column">
+                            <strong>{% if post.user.last_name and post.user.first_name%}
+                                {{post.user.last_name|title}} {{post.user.first_name|title}}
+                                {% else %}{{post.user.username|title}}{% endif %}
+                            </strong>
+                            <small class="text-muted">{{post.created_at}}</small>
+                        </div>
+                        
+                        {% if post.user != request.user %}
+							<form method="POST" action="{% if post.user.id in following %}{% url 'social:unfollow_user' post.user.id %}?next=social:home {% else %}{% url 'social:follow_user' post.user.id %} {% endif %}" class="ms-auto">
+								{% csrf_token %}
+								<button type="submit" class="btn btn-sm btn-primary ms-auto">
+									{% if post.user.id in following %}
+										Connected
+									{% else %}
+										Connect +
+									{% endif %}
+								</button>
+							</form>
+						{% endif %}
+                    </div>
+                    
+                    <p class="mt-2">{{post.content}}</p>
+                    
+
+                    <!-- Like, Comment, and Share Section -->
+                    <div class="d-flex justify-content-between mt-3 border-top pt-2">
+					<form action = "{% url 'social:like_post' post.id %}">
+					  {% csrf_token %}
+                        <button class="btn {% if request.user in post.likes.all %} btn-primary {% else %} btn-light {% endif %} btn-sm like-btn">
+                            <i class="bi bi-hand-thumbs-up"></i> Like <span class="like-count">{{post.total_likes}}</span>
+                        </button>
+					</form>
+                        <button class="btn btn-light btn-sm" data-bs-toggle="collapse" data-bs-target="#commentForm{{post.id}}">
+                            <i class="bi bi-chat"></i> Comment <span class="comment-count">{{post.post_comment.count}}</span>
+                        </button>
+						
+                        <button class="btn btn-light btn-sm share-btn"> 
+                            <i class="bi bi-share"></i> Share
+                        </button>
+                    </div>
+
+                    <!-- Comment Input Field (Hidden by Default) -->
+                    <div class="mt-2 collapse" id="commentForm{{post.id}}" >
+					   <form action="{% url 'social:add_comment' post.id %}" method="post" >
+					   {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="content" class="form-control rounded shadow-sm me-2 comment-input" placeholder="Write a comment..." required>
+                            <button type="submit" class="btn btn-primary rounded add-comment">Comment</button>
+                        </div>
+					   </form>
+                   
+
+                    <!-- More Comments Button -->
+                    <button class="btn btn-sm btn-secondary mt-2"  data-bs-toggle="collapse" data-bs-target="#commentSection{{post.id}}">More Comments</button>
+
+                    <!-- View Comments Section (Hidden by Default) -->
+                    <ul class="list-unstyled mt-2 collapse" id="commentSection{{post.id}}">
+					{% for comment in post.post_comment.all %}
+						<li class="border-bottom py-2 comment-item">
+						 <div class="d-flex align-items-center">
+						 <strong class="me-2">{% if comment.user.last_name and comment.user.first_name%}
+                            {{comment.user.last_name|title}} {{comment.user.first_name|title}}
+                            {% else %}{{comment.user.username|title}}{% endif %}
+                        </strong> : {{comment.content}}
+						  <span class="ms-auto d-flex align-items-center gap-2">
+						  
+							<form action = "{% url 'social:like_comment' comment.id %}" class="m-0">
+							  {% csrf_token %}
+								<button class="btn {% if request.user in comment.likes.all %} btn-primary {% else %} btn-light {% endif %} btn-sm like-btn">
+									<i class="bi bi-hand-thumbs-up"></i> Like <span class="like-count">{{comment.total_likes}}</span>
+								</button>
+							</form>
+							<button class="btn btn-sm reply-btn">Reply</button>
+						  </span>
+						 </div>
+						</li>
+					{% empty %}
+						<p class="text-muted">No comment yet.</p>
+					{% endfor %}
+					</ul>
+                   
+                </div>
+                
+            </div>
+		        
+				{% endfor %}<br><br><br>
+            
+             <!-- People to Connect With -->
+            <div class="col-lg-3 d-none d-lg-block p-3 position-fixed" style="top:56px; width:25%; right:0; height:100vh; overflow-y:auto;">
+                <h5 class="text-primary">People to Connect With</h5>
+                {% for person in people_to_connect %}
+                <div class="d-flex align-items-center bg-white p-2 rounded shadow-sm mb-2">
+                    <img src="{% if person.photo %}{{person.photo.url}}{% else %}{% static 'img/profile.png' %}{% endif %}" alt="User" class="rounded-circle me-2 thumbline1" >
+                    <div class="d-flex w-100 align-items-center">
+                        <strong class="me-2">{% if person.user.last_name and person.user.first_name%}
+                            {{person.user.last_name|title}} {{person.user.first_name|title}}
+                            {% else %}{{person.user.username|title}}{% endif %}
+                        </strong>
+						{% if person.user != request.user %}
+							<form method="POST" action="{% if person.user.id in following %}{% url 'social:unfollow_user' person.user.id %}?next=social:home {% else %}{% url 'social:follow_user' person.user.id %} {% endif %}" class="ms-auto">
+								{% csrf_token %}
+								<button type="submit" class="btn btn-sm btn-primary ms-auto">
+									{% if person.user.id in following %}
+										Connected
+									{% else %}
+										Connect +
+									{% endif %}
+								</button>
+							</form>
+						
+						{% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                
+                
+            </div>
+
+        </div>
+
+{% endblock %}
