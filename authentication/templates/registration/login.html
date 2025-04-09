@@ -39,14 +39,12 @@
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text bg-white border-0 rounded-start-pill"><i class="fas fa-lock"></i></span>
-                <input type="password" id="password" class="form-control border-0 shadow-sm rounded-end-pill" name="password" placeholder="Password" required>
+                <input type="password" id="password" class="form-control border-0 shadow-sm " name="password" placeholder="Password" required>
+				<span class="input-group-text bg-white border-0 rounded-end-pill showPasswordToggle" style="cursor:pointer;" ><i id="toggleIcon" class="fas fa-eye"></i></span>
             </div>
 
-            <div class="mb-3 text-end">
-                <small style="cursor: pointer;" class="showPasswordToggle py-3 ">SHOW</small>
-            </div>
 
-            <button type="submit" class="btn btn-dark w-100 rounded-pill animated-button">LOGIN</button>
+            <button type="submit" class="btn btn-dark w-100 rounded-pill animated-button">LOGIN</button> 
         </form>
         <!-- social links -->
         <div class="text-center mt-3">
@@ -70,7 +68,7 @@
     </div>
      <!-- Create Account Link -->
     <div class="mb-2">
-        <a href="{% url 'register' %}" class="text-white text-decoration-none">Create new account</a>
+        <a href="{% url 'register' %}" class="text-white text-decoration-none animated-text">Create new account</a>
     </div>
   </div>
 

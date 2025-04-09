@@ -7,7 +7,7 @@
                         {% if profile.photo %}
                         <img src="{{profile.photo.url}}" alt="Poster" class="rounded-circle me-2 thumbline2" >
                         {% else %}
-                        <img src="{% static 'img/profile.png' %}" alt="Poster" class="rounded-circle me-2 thumbline2" >
+                        <img src="{% static 'img/profile.png' %}" alt="Poster" class="rounded-circle me-2 thumbline2">
                         {% endif %}
                         <form  method="post" class="w-100">
                         {% csrf_token %}
