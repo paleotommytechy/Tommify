@@ -15,6 +15,7 @@ urlpatterns = [
     path('comment/<int:post_id>/', views.add_comment, name = 'add_comment'),
     path("follow/<int:user_id>/", views.follow_user, name="follow_user"),
     path("unfollow/<int:user_id>/", views.unfollow_user, name="unfollow_user"),
+    path('profile/<str:username>/', views.user_profile, name='user_profile'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

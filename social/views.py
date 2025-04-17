@@ -130,3 +130,10 @@ def network(request):
     following_ids = Friendship.objects.filter(follower=request.user).values_list("following_id", flat=True)
     people_to_connect = Profile.objects.exclude(user__id__in=following_ids).exclude(user=request.user)
     return render(request, 'network.html', {'people_to_connect':people_to_connect, 'profile':profile})
+    
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    following_ids = Friendship.objects.filter(follower=request.user).values_list("following_id", flat=True)
+    profile = Profile.objects.exclude(user__id__in=following_ids).exclude(user=request.user) 
+    return render(request, 'user_profile.html', {'profile_user': user, 'profile': profile})    
+    

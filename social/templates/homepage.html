@@ -5,9 +5,13 @@
                 <div class="post-input bg-white p-3 rounded shadow-sm ">
                     <div class="d-flex align-items-center">
                         {% if profile.photo %}
+						<a href="{% url 'social:user_profile' user.username %}" >
                         <img src="{{profile.photo.url}}" alt="Poster" class="rounded-circle me-2 thumbline2" >
+						</a>
                         {% else %}
+						<a href="{% url 'social:user_profile' user.username %}" class="rounded-circle me-2 thumbline2">
                         <img src="{% static 'img/profile.png' %}" alt="Poster" class="rounded-circle me-2 thumbline2">
+						</a>
                         {% endif %}
                         <form  method="post" class="w-100">
                         {% csrf_token %}
@@ -24,9 +28,11 @@
                 {% for post in posts %}      
                 <div class="post bg-white p-3 rounded shadow-sm mt-3">
                     <div class="d-flex align-items-center">
-                        
-                        <img src="{% if post.user.profile.photo %}{{post.user.profile.photo.url}}{% else %}{% static 'img/profile.png' %}{% endif %}" alt="Poster" class="rounded-circle me-2 thumbline1" > 
-                        <div class="d-flex flex-column">
+                         
+						<a href="{% url 'social:user_profile' user.username %}">
+							<img src="{% if post.user.profile.photo %}{{post.user.profile.photo.url}}{% else %}{% static 'img/profile.png' %}{% endif %}" alt="Poster" class="rounded-circle me-2 thumbline1" > 
+						</a>
+                          <div class="d-flex flex-column">
                             <strong>{% if post.user.last_name and post.user.first_name%}
                                 {{post.user.last_name|title}} {{post.user.first_name|title}}
                                 {% else %}{{post.user.username|title}}{% endif %}

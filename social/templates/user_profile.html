@@ -1,0 +1,13 @@
+{% extends 'social_base.html' %}
+{% load static %}
+{% block main-content %}
+
+<!-- user_profile.html -->
+<div class="col-lg-7 col-12 mx-auto p-3 " >
+
+	<h2>{{ profile_user.username }}'s Profile</h2>
+	<img src="{{profile.photo.url}}" alt="{{ profile_user.username }}">
+	<p>Full name: {{ profile_user.first_name }} {{ profile_user.last_name }}</p>
+	<p>Bio: {{ profile.bio }}</p>
+</div>
+{% endblock %}
