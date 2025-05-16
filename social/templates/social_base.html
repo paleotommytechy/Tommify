@@ -98,6 +98,9 @@
             <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Notifications</a>
             <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Groups</a>
             <a href="{% url 'social:friends_list' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Friends</a>
+			{% if user.is_authenticated and user.is_staff %}
+				<a href="{% url 'admin:index' %}" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Admin Panel</a>
+			{% endif %}
             <a href="#" class="d-block text-dark text-decoration-none mb-2 sidebar-link">Settings</a>
             <a href="{% url 'logout' %}" class="d-block text-danger text-decoration-none mt-3 sidebar-link">Logout</a>
         </div>
